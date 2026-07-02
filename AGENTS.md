@@ -206,6 +206,7 @@ Before considering any task complete, the agent must:
 |---|---|---|
 | 2026-07-03 | Initial Vite + React + Tailwind v3 scaffold; converted `routine_v4.jsx` to `App.jsx` with Tailwind classes; added GitHub Pages config (base path, 404.html, redirect script); pinned Tailwind to v3 | opencode |
 | 2026-07-03 | Created `README.md` and `AGENTS.md` | opencode |
+| 2026-07-03 | Added `.github/workflows/deploy.yml` for automated GitHub Pages deployment on push to `main` | opencode |
 
 ---
 
