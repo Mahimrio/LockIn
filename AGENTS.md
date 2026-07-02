@@ -43,6 +43,9 @@ lockin/
 │   ├── App.jsx               # ALL component logic & data (single-file)
 │   ├── index.css             # Tailwind directives + base styles
 │   └── main.jsx              # React 18 createRoot entry
+├── .github/
+│   └── workflows/
+│       └── deploy.yml        # GitHub Actions: build + deploy to Pages on push to main
 ├── index.html                # HTML entry + sessionStorage redirect script
 ├── tailwind.config.js        # content paths, font family extension
 ├── postcss.config.js         # tailwindcss + autoprefixer
@@ -128,6 +131,10 @@ npm run preview      # preview the production build locally
 - **Base path:** `/LockIn/` (matches repo name casing)
 - **SPA routing:** `public/404.html` + sessionStorage redirect in `index.html` work together
 - **Workflow:** push to `main` → GitHub Actions builds `dist/` and publishes
+- **CI:** `.github/workflows/deploy.yml`
+  - Node 24 (Node 20 is deprecated on GitHub Actions runners as of 2025-09-19)
+  - `actions/configure-pages@v5` with `enablement: true` so Pages is auto-enabled on first run
+  - `actions/upload-pages-artifact@v3` + `actions/deploy-pages@v4`
 
 ---
 
@@ -207,6 +214,7 @@ Before considering any task complete, the agent must:
 | 2026-07-03 | Initial Vite + React + Tailwind v3 scaffold; converted `routine_v4.jsx` to `App.jsx` with Tailwind classes; added GitHub Pages config (base path, 404.html, redirect script); pinned Tailwind to v3 | opencode |
 | 2026-07-03 | Created `README.md` and `AGENTS.md` | opencode |
 | 2026-07-03 | Added `.github/workflows/deploy.yml` for automated GitHub Pages deployment on push to `main` | opencode |
+| 2026-07-03 | Fixed deploy workflow: bumped Node 20 → 24 (Node 20 deprecated on runners), upgraded `actions/configure-pages` v4 → v5 with `enablement: true` so Pages auto-enables on first run | opencode |
 
 ---
 
