@@ -1,0 +1,27 @@
+const dailySchedule = [
+  { time:"6:00 AM",  category:"discipline", icon:"🌅", label:"Wake Up",              desc:"Rise immediately. Drink a full glass of water. No phone." },
+  { time:"6:05 AM",  category:"prayer",     icon:"🤲", label:"Fajr / Morning Prayer", desc:"Start your day with God. Pray, reflect, set your intention." },
+  { time:"6:30 AM",  category:"fitness",    icon:"🚿", label:"Shower & Groom",        desc:"Cold rinse at the end. Get dressed as if you have somewhere to be." },
+  { time:"6:50 AM",  category:"fitness",    icon:"🥗", label:"Healthy Breakfast",     desc:"Protein-rich, whole foods. No junk. Fuel your brain and body." },
+  { time:"7:15 AM",  category:"discipline", icon:"📓", label:"Plan & Journal",        desc:"Write your 3 must-do tasks. Review your semester goal. Visualize success." },
+  { time:"7:40 AM",  category:"career",     icon:"🧩", label:"Competitive Programming",desc:"2 hrs of pure CP. Solve problems, sharpen logic. Phone on DND." },
+  { time:"9:40 AM",  category:"discipline", icon:"🧘", label:"Short Break",           desc:"10 min — stretch, hydrate, breathe. No scrolling." },
+  { time:"9:50 AM",  category:"career",     icon:"💻", label:"Web Development",       desc:"2 hrs of focused web dev. Build, code, debug, ship." },
+  { time:"11:50 AM", category:"discipline", icon:"☕", label:"Short Break",           desc:"10–15 min before Dhuhr. Rest your eyes, hydrate." },
+  { time:"12:10 PM", category:"prayer",     icon:"🤲", label:"Dhuhr Prayer",          desc:"Pause everything. Pray. Reset your mind at midday." },
+  { time:"12:25 PM", category:"fitness",    icon:"🏋️", label:"Post-Dhuhr Workout",    desc:"30 min strength training or calisthenics." },
+  { time:"1:00 PM",  category:"fitness",    icon:"🍱", label:"Lunch + Rest",          desc:"Eat a light, balanced meal. Rest your eyes." },
+  { time:"1:45 PM",  category:"career",     icon:"📚", label:"University / Semester Study",desc:"Classes or 2 hrs dedicated study. Check your uni schedule tab." },
+  { time:"4:00 PM",  category:"prayer",     icon:"🤲", label:"Asr Prayer + Reflection",desc:"Pray Asr. Reflect on your morning." },
+  { time:"4:15 PM",  category:"fitness",    icon:"🚶", label:"Physical Reset",        desc:"30 min walk, jog, or stretching. Get sunlight." },
+  { time:"5:00 PM",  category:"discipline", icon:"🧹", label:"Prep & Wind Down",       desc:"Tidy your space. Protect your peace." },
+  { time:"5:30 PM",  category:"prayer",     icon:"🤲", label:"Maghrib Prayer",        desc:"Pray Maghrib as soon as it enters." },
+  { time:"6:00 PM",  category:"fitness",    icon:"🍽️", label:"Dinner & Family Time",  desc:"Eat well. Be present with family. Unplug from work." },
+  { time:"7:00 PM",  category:"career",     icon:"🌙", label:"Evening Review / Light Study",desc:"Light revision of CP, web dev, or uni subjects." },
+  { time:"8:30 PM",  category:"prayer",     icon:"🤲", label:"Isha Prayer",           desc:"Pray Isha. Spiritual anchor before the night." },
+  { time:"9:00 PM",  category:"discipline", icon:"✍️", label:"Night Journal + Gratitude",desc:"Write 3 wins from today." },
+  { time:"9:20 PM",  category:"discipline", icon:"😴", label:"Wind Down — No Screens", desc:"Read something light, stretch, or meditate." },
+  { time:"10:00 PM", category:"discipline", icon:"🌑", label:"Lights Out",            desc:"Sleep. 8 hours is not optional. Champions rest well." },
+];
+
+export default dailySchedule;

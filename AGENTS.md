@@ -12,9 +12,10 @@
 **Repo:** https://github.com/Mahimrio/LockIn
 **Base path:** `/LockIn/` (configured in `vite.config.js` and `public/404.html`)
 
-The app has two main views:
-1. **University view** — full class schedule with theory/lab distinction, rooms, teachers, and notes
-2. **Tracker view** — 98-day (14-week) progress grid with circular completion rings, stats, and the 4-pillars framework
+The app has three views:
+1. **Daily view** — 23-item daily routine with checkboxes per category (Prayer, Fitness, Career, Discipline), persisted to localStorage
+2. **University view** — full class schedule with theory/lab distinction, rooms, teachers, and notes
+3. **Tracker view** — 98-day (14-week) progress grid with circular completion rings, stats, and the 4-pillars framework
 
 ---
 
@@ -26,9 +27,9 @@ The app has two main views:
 | Framework | React | 18 |
 | Styling | Tailwind CSS | **v3** (pinned — v4 has a different config flow) |
 | CSS pipeline | PostCSS + Autoprefixer | latest |
-| Persistence | `localStorage` (key: `routine-progress-v4`) | browser native |
+| Persistence | `localStorage` (key: `lockin-v4`) | browser native |
 
-> **Historical note:** The original `routine_v4.jsx` used `window.storage.get/set` (a Claude.ai artifact API). The conversion to Tailwind preserved the call sites but the storage layer should be migrated to plain `localStorage` for production use. The current `try/catch` blocks will silently swallow the error and fall back to `SEED_CHECKED`.
+> **Historical note:** The original `routine_v4.jsx` used `window.storage.get/set`. The refactored `useProgress` hook now uses plain `localStorage` with key `"lockin-v4"`.
 
 ---
 
@@ -40,7 +41,20 @@ lockin/
 │   ├── 404.html              # SPA routing fallback for GitHub Pages
 │   └── favicon.ico           # 62-byte placeholder
 ├── src/
-│   ├── App.jsx               # ALL component logic & data (single-file)
+│   ├── components/
+│   │   ├── NavBar.jsx        # Tab navigation: Daily / University / Tracker
+│   │   ├── Header.jsx        # Title, subtitle, saving indicator, semester progress bar
+│   │   ├── DaySelector.jsx   # Previous/Next arrows, day info, day progress bar
+│   │   ├── DailyView.jsx     # Daily routine checklist (23 items, categories, checkboxes)
+│   │   ├── UniversityView.jsx# Today's classes, lab/theory cards, course reference table
+│   │   └── TrackerView.jsx   # 14-week progress grid, stats cards, 4 pillars section
+│   ├── hooks/
+│   │   └── useProgress.js    # localStorage persistence, toggle, dayProgress, totalProgress
+│   ├── data/
+│   │   ├── constants.js      # SEMESTER_START, TOTAL_DAYS, SCHEDULE_LEN, DAY_NAMES, DAY_FULL, SEED_CHECKED
+│   │   ├── uniSchedule.js    # Full week1/week2 uni schedule object
+│   │   └── dailySchedule.js  # 23-item daily routine array
+│   ├── App.jsx               # Root component wiring all pieces together
 │   ├── index.css             # Tailwind directives + base styles
 │   └── main.jsx              # React 18 createRoot entry
 ├── .github/
@@ -59,20 +73,34 @@ lockin/
 
 ---
 
-## 4. Key Constants & Data (in `src/App.jsx`)
+## 4. Key Constants & Data
 
 When modifying logic, **preserve these exactly**:
 
-- `SEMESTER_START` — `new Date("2026-06-15")` — day 1 of the semester
-- `TOTAL_DAYS` — `98` (14 weeks × 7 days)
-- `SCHEDULE_LEN` — `23` (used by progress calculations)
-- `SEED_CHECKED` — auto-generated object; marks days 1–14 (first 2 weeks) as fully checked
-- `uniSchedule` — nested object with `week1` / `week2` patterns, indexed by day-of-week (0=Sun … 6=Sat)
-- `DAY_NAMES` / `DAY_FULL` — short and long weekday names
-
-Helper functions: `getDayInfo(dayNumber)`, `getUniClasses(dayNumber)`. Both rely on `SEMESTER_START`.
+- **`src/data/constants.js`** — exports:
+  - `SEMESTER_START` — `new Date("2026-06-15")` — day 1 of the semester
+  - `TOTAL_DAYS` — `98` (14 weeks × 7 days)
+  - `SCHEDULE_LEN` — `23` (used by progress calculations)
+  - `SEED_CHECKED` — auto-generated object; marks days 1–14 (first 2 weeks) as fully checked
+  - `DAY_NAMES` / `DAY_FULL` — short and long weekday names
+- **`src/data/uniSchedule.js`** — default export: nested object with `week1` / `week2` patterns, indexed by day-of-week (0=Sun … 6=Sat)
+- **`src/data/dailySchedule.js`** — default export: array of 23 daily routine items with `time`, `category`, `icon`, `label`, `desc`. Categories: `prayer`, `fitness`, `career`, `discipline`.
 
 **Pattern logic:** `semesterWeek % 2 === 1` → `week1` / "A", else `week2` / "B".
+
+### `useProgress` hook (`src/hooks/useProgress.js`)
+
+```js
+const { checked, loaded, saving, toggle, dayProgress, totalProgress } = useProgress();
+```
+
+- `checked` — `{ [d{day}-i{idx}]: boolean }` — the full checked state
+- `toggle(day, idx)` — toggles a single checkbox
+- `dayProgress(day)` — returns 0–100 percentage for a given day
+- `totalProgress()` — returns 0–100 across all 98 days
+- Persists to `localStorage` under key `"lockin-v4"`
+- `loaded` is false until localStorage read completes (use for loading state)
+- `saving` briefly toggles true on each write (show "SAVING..." indicator)
 
 ---
 
@@ -85,8 +113,8 @@ Helper functions: `getDayInfo(dayNumber)`, `getUniClasses(dayNumber)`. Both rely
 - **Accent colors:**
   - Purple `#7c3aed` (in-progress)
   - Green `#059669` / `#34d399` (complete)
-  - Amber `#d97706` / `#fbbf24` (warnings, prayer pillar)
-  - Blue `#38bdf8` (theory classes)
+  - Amber `#d97706` / `#fbbf24` (warnings, prayer pillar, prayer category badge)
+  - Blue `#38bdf8` (theory classes, career category badge)
 - **Text:** primary `#e8e4d9`, secondary `#888`, muted `#555` / `#666`
 
 ### Typography
@@ -98,6 +126,14 @@ Helper functions: `getDayInfo(dayNumber)`, `getUniClasses(dayNumber)`. Both rely
 - **Tailwind classes only** — no inline `style={{...}}` except for dynamic values that can't be expressed as a class (e.g., SVG `strokeDasharray`, percentage widths, dynamic background colors from the data)
 - Use arbitrary-value classes for one-off colors: `bg-[#0e0e18]`, `text-[#555]`, `border-[#1e1e2e]`
 - For complex conditional className logic, **extract to a `const` variable** — do not nest template literals in JSX (causes parser issues with some bundlers)
+
+### Daily View Category Colors (in `DailyView.jsx`)
+- **Prayer** — dot `#fbbf24`, badge `bg-[#3b0764]` text `#fbbf24`
+- **Fitness** — dot `#34d399`, badge `bg-[#052e16]` text `#34d399`
+- **Career** — dot `#38bdf8`, badge `bg-[#082f49]` text `#38bdf8`
+- **Discipline** — dot `#a78bfa`, badge `bg-[#1a1025]` text `#a78bfa`
+
+Items fade to 55% opacity when checked. Checkbox turns purple `#7c3aed` with white ✓.
 
 ### Layout
 - Max content width: `680px` (centered, with `px-4` padding)
@@ -214,7 +250,8 @@ Before considering any task complete, the agent must:
 | 2026-07-03 | Initial Vite + React + Tailwind v3 scaffold; converted `routine_v4.jsx` to `App.jsx` with Tailwind classes; added GitHub Pages config (base path, 404.html, redirect script); pinned Tailwind to v3 | opencode |
 | 2026-07-03 | Created `README.md` and `AGENTS.md` | opencode |
 | 2026-07-03 | Added `.github/workflows/deploy.yml` for automated GitHub Pages deployment on push to `main` | opencode |
-| 2026-07-03 | Fixed deploy workflow: bumped Node 20 → 24 (Node 20 deprecated on runners), upgraded `actions/configure-pages` v4 → v5 with `enablement: true` so Pages auto-enables on first run | opencode |
+| 2026-07-03 | Fixed deploy workflow: bumped Node 20 → 24, upgraded `actions/configure-pages` v4 → v5 with `enablement: true` | opencode |
+| 2026-07-03 | Refactored `App.jsx` into modular structure: `components/` (6 files), `hooks/` (1 file), `data/` (3 files). Added Daily View with 23-item routine checklist, category badges, and localStorage persistence. Storage key changed to `"lockin-v4"`. | opencode |
 
 ---
 
