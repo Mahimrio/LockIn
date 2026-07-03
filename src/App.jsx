@@ -13,7 +13,7 @@ export default function App() {
   const { checked, loaded, saving, toggle, dayProgress, totalProgress } = useProgress();
 
   return (
-    <div className="font-serif bg-[#0a0a0f] min-h-screen text-[#e8e4d9]">
+    <div className="font-serif bg-[#0a0a0f] min-h-screen text-[#e8e4d9] fade-in">
       {!loaded && (
         <div className="fixed inset-0 bg-[#0a0a0f] flex items-center justify-center z-[999]">
           <div className="text-center">
@@ -44,8 +44,6 @@ export default function App() {
       {view === "university" && (
         <UniversityView
           activeDay={activeDay}
-          setActiveDay={setActiveDay}
-          setView={setView}
         />
       )}
 

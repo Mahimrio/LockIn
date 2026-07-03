@@ -5,12 +5,16 @@ export default function NavBar({ view, setView }) {
     ["tracker", "📆 Tracker"],
   ];
   return (
-    <div className="flex border-b border-[#1e1e2e] bg-[#0c0c14]">
+    <div className="sticky top-0 z-50 flex border-b border-[#1e1e2e] bg-[#0c0c14] backdrop-blur-sm">
       {tabs.map(([v, label]) => (
         <button
           key={v}
           onClick={() => setView(v)}
-          className={`flex-1 py-[13px] px-1 text-[11px] tracking-[1.5px] uppercase bg-transparent border-0 border-b-2 cursor-pointer transition-all duration-200 ${view === v ? "border-b-[#7c3aed] text-[#c4b5fd]" : "border-b-transparent text-[#555]"}`}
+          className={`flex-1 py-[13px] px-1 text-[11px] tracking-[1.5px] uppercase bg-transparent border-0 border-b-2 cursor-pointer transition-all duration-200 min-h-[48px] select-none
+            ${view === v
+              ? "border-b-[#7c3aed] text-[#c4b5fd]"
+              : "border-b-transparent text-[#555] hover:text-[#777]"
+            }`}
         >
           {label}
         </button>

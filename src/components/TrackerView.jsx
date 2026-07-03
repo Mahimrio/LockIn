@@ -21,8 +21,8 @@ export default function TrackerView({ activeDay, setActiveDay, setView, dayProgr
         const wkPattern  = week % 2 === 1 ? "A" : "B";
         const weekIsDone = week <= 2;
         return (
-          <div key={week} className="mb-[14px]">
-            <div className="flex items-center gap-2 mb-[7px]">
+          <div key={week} className="mb-4">
+            <div className="flex items-center gap-2 mb-2">
               <span className={`text-[10px] tracking-[2px] uppercase ${weekIsDone ? "text-[#059669]" : "text-[#555]"}`}>
                 {weekIsDone ? "✅ " : ""}Week {week}
               </span>
@@ -38,7 +38,6 @@ export default function TrackerView({ activeDay, setActiveDay, setView, dayProgr
                 const isActive = day === activeDay;
                 const isWknd   = ["Fri","Sat"].includes(dayName);
                 const ringColor = pct === 100 ? "#059669" : pct > 0 ? "#7c3aed" : "#2a2a3a";
-                const cellBase = "rounded-[10px] py-[9px] px-[5px] text-center cursor-pointer transition-all duration-200";
                 let cellState = "";
                 if (isActive) {
                   cellState = "border-2 border-[#7c3aed] bg-[#1a1025]";
@@ -57,7 +56,7 @@ export default function TrackerView({ activeDay, setActiveDay, setView, dayProgr
                   <div
                     key={day}
                     onClick={() => { setActiveDay(day); setView("university"); }}
-                    className={`${cellBase} ${cellState}`}
+                    className={`rounded-[10px] py-[9px] px-[5px] text-center cursor-pointer transition-all duration-200 min-h-[64px] card-hover ${cellState}`}
                     style={{ opacity: isWknd && !weekIsDone ? 0.4 : 1 }}
                   >
                     <div className={`text-[8px] mb-[2px] ${isWknd ? "text-[#444]" : "text-[#555]"}`}>{dayName}</div>
@@ -85,35 +84,33 @@ export default function TrackerView({ activeDay, setActiveDay, setView, dayProgr
         );
       })}
 
-      {/* Stats */}
-      <div className="mt-5 grid grid-cols-2 gap-[10px]">
+      <div className="mt-5 grid grid-cols-2 gap-3">
         {[
           { label:"Weeks Done",      value:"2 / 14",  icon:"📅" },
           { label:"Days Complete",   value:`14 / ${TOTAL_DAYS}`, icon:"✅" },
           { label:"Weeks Remaining", value:"12",       icon:"⏳" },
           { label:"Current Week",    value:`Week ${Math.ceil(activeDay/7)}`, icon:"🎓" },
         ].map(stat => (
-          <div key={stat.label} className="bg-[#0e0e18] border border-[#1e1e2e] rounded-xl p-4">
-            <div className="text-[20px] mb-1">{stat.icon}</div>
-            <div className="text-[22px] text-[#c4b5fd] mb-[2px]">{stat.value}</div>
+          <div key={stat.label} className="bg-[#0e0e18] border border-[#1e1e2e] rounded-xl p-4 card-hover">
+            <div className="text-[22px] mb-1">{stat.icon}</div>
+            <div className="text-[23px] text-[#c4b5fd] mb-[2px]">{stat.value}</div>
             <div className="text-[10px] text-[#555] uppercase tracking-[1px]">{stat.label}</div>
           </div>
         ))}
       </div>
 
-      {/* Pillars */}
-      <div className="mt-4 bg-[#0e0e18] border border-[#1e1e2e] rounded-xl p-4">
-        <p className="text-[10px] text-[#555] tracking-[2px] uppercase mt-0 mr-0 mb-3 ml-0">The 4 Pillars</p>
+      <div className="mt-5 bg-[#0e0e18] border border-[#1e1e2e] rounded-xl p-4">
+        <p className="text-[10px] text-[#555] tracking-[2px] uppercase m-0 mb-3">The 4 Pillars</p>
         {[
           { label:"Prayer",            desc:"5 daily prayers are your anchor. Never skip them.",      color:"#fbbf24" },
           { label:"Fitness & Health",  desc:"Move your body daily. Eat clean. Sleep 8 hours.",        color:"#34d399" },
           { label:"Study & Career",    desc:"CP + Web Dev + University subjects. Every single day.",  color:"#38bdf8" },
           { label:"Mental Discipline", desc:"Journal, plan, reflect. Win the morning, win the day.",  color:"#a78bfa" },
         ].map(p => (
-          <div key={p.label} className="flex gap-[10px] items-start mb-[10px]">
+          <div key={p.label} className="flex gap-3 items-start mb-3 last:mb-0">
             <div className="w-[3px] rounded-[99px] self-stretch flex-shrink-0" style={{ background: p.color }} />
             <div>
-              <div className="text-[12px] mb-[2px]" style={{ color: p.color }}>{p.label}</div>
+              <div className="text-[13px] mb-[2px]" style={{ color: p.color }}>{p.label}</div>
               <div className="text-[11px] text-[#666]">{p.desc}</div>
             </div>
           </div>

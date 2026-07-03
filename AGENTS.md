@@ -118,9 +118,10 @@ const { checked, loaded, saving, toggle, dayProgress, totalProgress } = useProgr
 - **Text:** primary `#e8e4d9`, secondary `#888`, muted `#555` / `#666`
 
 ### Typography
-- Body: Georgia, serif (set globally in `index.css`)
+- Body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif (set globally in `index.css`)
+- Headings (h1-h4): Georgia, 'Times New Roman', serif
 - Code/monospace: ui-monospace, Consolas, monospace
-- Tailwind utility: `font-serif`, `font-mono`
+- Tailwind utility: `font-serif` on the root wrapper, Georgia for headings via CSS
 
 ### Styling rules
 - **Tailwind classes only** — no inline `style={{...}}` except for dynamic values that can't be expressed as a class (e.g., SVG `strokeDasharray`, percentage widths, dynamic background colors from the data)
@@ -252,6 +253,7 @@ Before considering any task complete, the agent must:
 | 2026-07-03 | Added `.github/workflows/deploy.yml` for automated GitHub Pages deployment on push to `main` | opencode |
 | 2026-07-03 | Fixed deploy workflow: bumped Node 20 → 24, upgraded `actions/configure-pages` v4 → v5 with `enablement: true` | opencode |
 | 2026-07-03 | Refactored `App.jsx` into modular structure: `components/` (6 files), `hooks/` (1 file), `data/` (3 files). Added Daily View with 23-item routine checklist, category badges, and localStorage persistence. Storage key changed to `"lockin-v4"`. | opencode |
+| 2026-07-03 | Mobile-first UI polish: swapped body font to system-ui (Georgia for headings), added fade-in animation, sticky NavBar + DaySelector, 48px min-height touch targets, checked-stripe overlay on completed daily cards, card-hover shadow on desktop (@media pointer: fine), thin scrollbar, responsive clamp() font sizes. | opencode |
 
 ---
 

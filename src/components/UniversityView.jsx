@@ -16,7 +16,7 @@ function getUniClasses(dayNumber) {
   return uniSchedule[pattern][dow] || [];
 }
 
-export default function UniversityView({ activeDay, setActiveDay, setView }) {
+export default function UniversityView({ activeDay }) {
   const { dayName, semesterWeek, patternLabel } = getDayInfo(activeDay);
   const todayClasses = getUniClasses(activeDay);
   const isWeekend = ["Fri", "Sat"].includes(dayName);
@@ -26,37 +26,37 @@ export default function UniversityView({ activeDay, setActiveDay, setView }) {
     <div className="max-w-[680px] mx-auto px-4 pb-10">
       <div className="mt-4">
         {isCompleted ? (
-          <div className="text-center py-[50px] px-5">
-            <div className="text-[52px] mb-3">✅</div>
-            <p className="text-[15px] text-[#34d399]">Week {semesterWeek} — Already Completed</p>
+          <div className="text-center py-[60px] px-5">
+            <div className="text-[56px] mb-4">✅</div>
+            <p className="text-[16px] text-[#34d399]">Week {semesterWeek} — Already Completed</p>
             <p className="text-[12px] text-[#555] mt-2">Days 1–14 are locked in. You crushed it.</p>
           </div>
         ) : isWeekend ? (
-          <div className="text-center py-[50px] px-5">
-            <div className="text-[52px] mb-3">🏖️</div>
-            <p className="text-[15px] text-[#888]">No classes today</p>
-            <p className="text-[12px] text-[#555] mt-[6px]">Rest, recover, prepare.</p>
+          <div className="text-center py-[60px] px-5">
+            <div className="text-[56px] mb-4">🏖️</div>
+            <p className="text-[16px] text-[#888]">No classes today</p>
+            <p className="text-[12px] text-[#555] mt-2">Rest, recover, prepare.</p>
           </div>
         ) : todayClasses.length === 0 ? (
-          <div className="text-center py-[50px] px-5">
-            <div className="text-[52px] mb-3">📭</div>
-            <p className="text-[13px] text-[#666]">No classes scheduled.</p>
+          <div className="text-center py-[60px] px-5">
+            <div className="text-[56px] mb-4">📭</div>
+            <p className="text-[14px] text-[#666]">No classes scheduled.</p>
           </div>
         ) : (
           <>
-            <div className="flex gap-[10px] items-center mb-[14px] py-[10px] px-[14px] bg-[#0e0e18] border border-[#1e1e2e] rounded-[10px]">
-              <div className="text-[20px]">🎓</div>
+            <div className="flex gap-3 items-center mb-4 py-3 px-4 bg-[#0e0e18] border border-[#1e1e2e] rounded-xl">
+              <div className="text-[22px]">🎓</div>
               <div>
-                <div className="text-[12px] text-[#c4b5fd] font-medium">Week {semesterWeek} · Pattern {patternLabel} · A1 Group</div>
+                <div className="text-[13px] text-[#c4b5fd] font-medium">Week {semesterWeek} · Pattern {patternLabel} · A1 Group</div>
                 <div className="text-[11px] text-[#555] mt-[2px]">{todayClasses.length} session{todayClasses.length !== 1 ? "s" : ""} today</div>
               </div>
             </div>
 
-            <div className="flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-3">
               {todayClasses.map((cls, i) => (
                 <div
                   key={i}
-                  className={`flex gap-3 items-start py-[14px] px-4 rounded-xl bg-[#0e0e18] border ${cls.type === "lab" ? "border-[#6b21a8]" : "border-[#1e2a3a]"}`}
+                  className={`flex gap-3 items-start pt-4 pr-4 pb-4 pl-3 rounded-xl bg-[#0e0e18] transition-all duration-200 card-hover ${cls.type === "lab" ? "border border-[#6b21a8]" : "border border-[#1e2a3a]"}`}
                 >
                   <div className={`w-[3px] rounded-[99px] self-stretch flex-shrink-0 ${cls.type === "lab" ? "bg-[#a855f7]" : "bg-[#38bdf8]"}`} />
                   <div className="flex-1">
@@ -73,15 +73,15 @@ export default function UniversityView({ activeDay, setActiveDay, setView }) {
                       <span className="text-[11px] text-[#555]">👤 {cls.teacher}</span>
                     </div>
                     {cls.note && (
-                      <div className="mt-2 py-[5px] px-[10px] bg-[#1a1025] border border-[#4c1d95] rounded-md text-[11px] text-[#a78bfa]">⚠️ {cls.note}</div>
+                      <div className="mt-2 pt-[6px] pb-[6px] pr-3 pl-3 bg-[#1a1025] border border-[#4c1d95] rounded-md text-[11px] text-[#a78bfa]">⚠️ {cls.note}</div>
                     )}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-[18px] p-[14px] bg-[#0e0e18] border border-[#1e1e2e] rounded-xl">
-              <p className="text-[10px] text-[#555] tracking-[2px] uppercase mt-0 mr-0 mb-[10px] ml-0">Course Reference</p>
+            <div className="mt-5 p-4 bg-[#0e0e18] border border-[#1e1e2e] rounded-xl">
+              <p className="text-[10px] text-[#555] tracking-[2px] uppercase m-0 mb-3">Course Reference</p>
               {[
                 ["CSE 3200","Software Dev-V Lab","Broti"],
                 ["CSE 3201","Computer Networks","Joy"],
